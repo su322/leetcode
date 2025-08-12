@@ -23,3 +23,35 @@ package 按照专题分类.双指针;
 进阶：你能尽量减少完成的操作次数吗？
 */
 
+import java.util.Arrays;
+
+class 移动零 {
+    public static void main(String[] args) {
+        int[] nums = {0, 1, 0, 3, 12};
+
+        int[] res = solution(nums);
+        System.out.println(Arrays.toString(res)); // 这个toString的得记住
+    }
+
+    // 核心思路是用双指针法：一个指针i遍历数组，另一个指针j指向下一个要放非零元素的位置。
+    // 遍历时遇到非零元素就放到前面，最后把剩下的位置补零。
+    private static int[] solution(int[] nums) {
+        int j = 0; // 记录下一个要放非零元素的位置
+
+        for (int i = 0; i < nums.length; i++) {
+            // 遍历数组，把非零元素依次放到前面
+            if (nums[i] != 0) {
+                nums[j] = nums[i];
+                j++;
+            }
+        }
+
+        // 遍历完后，j 之后的位置全部赋值为0
+        while (j < nums.length) {
+            nums[j] = 0;
+            j++;
+        }
+
+        return nums;
+    }
+}
