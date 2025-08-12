@@ -25,3 +25,41 @@ package 按照专题分类.哈希;
         -109 <= nums[i] <= 109
 */
 
+import java.util.HashSet;
+import java.util.Set;
+
+class 最长连续序列 {
+    public static void main(String[] args) {
+        int[] nums = new int[]{100, 4, 200, 1, 3, 2};
+
+        System.out.println(solution0(nums));
+    }
+
+    // 力扣网站上结果排序还更快一点，可能是因为用例数据量小
+    private static int solution0(int[] nums) {
+        int res = 0;
+
+        // 用hashset可以去重，可以少用到重复的数字，并且查找快
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        for (int num : set) {
+            int len = 1; // 默认长度为1
+
+            // 如果num-1没有，说明可以作为连续序列的开头，如果不这样剪枝，会用到很多次序列中间后面的数字
+            if (!set.contains(num - 1)) {
+                int cur = num; // 记录当前数字
+                // 如果下一个存在，就继续
+                while (set.contains(cur + 1)) {
+                    cur++;
+                    len++;
+                }
+            }
+            res = Math.max(res, len);
+        }
+
+        return res;
+    }
+}

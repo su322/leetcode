@@ -29,3 +29,71 @@ package 按照专题分类.哈希;
 strs[i] 仅包含小写字母
  */
 
+import java.util.*;
+
+class 字母异位词分组 {
+    public static void main(String[] args) {
+        String[] strs = new String[]{"eat", "tea", "tan", "ate", "nat", "bat"};
+        Map<String, List<String>> res;
+
+        res = solution0(strs);
+        System.out.println(res.values());
+    }
+
+    // 计数法 O(n * k) 每个字符串最大长度为k
+    private static Map<String, List<String>> solution0(String[] strs) {
+        Map<String, List<String>> res = new HashMap<>();
+
+        // 遍历每个数组元素
+        for (String str : strs) {
+            // 多个异位词都有唯一字母计数，用它作为key
+            int[] record = new int[26];
+            // 遍历每个字符串字符
+            for (int i = 0; i < str.length(); i++) {
+                // 相当于得到了一个key
+                record[str.charAt(i) - 'a']++;
+            }
+            // 数组转成String
+            String key = Arrays.toString(record);
+
+            // 接下来存到结果map里
+            // 如果key之前已经添加过，就把str添加到对应的列表里
+            if (res.containsKey(key)) {
+                res.get(key).add(str);
+            } else {
+                // 如果没添加过，就创建新List并添加str再put
+                List<String> list = new ArrayList<>();
+                list.add(str);
+                res.put(key, list);
+            }
+        }
+
+        return res;
+    }
+
+    // 排序法，就是要记得String转成字符数组的方法
+    // O(n * k * logk) 每个字符串排序 O(k * logk)
+    private static Map<String, List<String>> solution1(String[] strs) {
+        Map<String, List<String>> res = new HashMap<>();
+
+        for (String str : strs) {
+            // 对每个字符串的字符排序，作为key
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            String key = new String(chars);
+
+            // 接下来存到结果map里
+            // 如果key之前已经添加过，就把str添加到对应的列表里
+            if (res.containsKey(key)) {
+                res.get(key).add(str);
+            } else {
+                // 如果没添加过，就创建新List并添加str再put
+                List<String> list = new ArrayList<>();
+                list.add(str);
+                res.put(key, list);
+            }
+        }
+
+        return res;
+    }
+}
