@@ -35,3 +35,33 @@ package 按照专题分类.栈;
 s 仅由括号 '()[]{}' 组成
  */
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+class 有效的括号 {
+    public static void main(String[] args) {
+        String str = "()[]{}";
+
+        System.out.println(solution(str));
+    }
+    
+    private static boolean solution(String str) {
+        Deque<Character> stack = new ArrayDeque<>();
+        
+        for (char c : str.toCharArray()) {
+            if (c == '(') {
+                stack.push(')'); // 碰到左括号，就把相应的右括号入栈
+            } else if (c == '[') {
+                stack.push(']');
+            } else if (c == '{') {
+                stack.push('}');
+            } else if (stack.isEmpty() || stack.peek() != c) {
+                return false; // 开头不是左括号，或者右括号和栈中的不匹配
+            } else {
+                // 碰到右括号 右括号是否正确在上面判断了
+                stack.pop();
+            }
+        }
+        return stack.isEmpty(); // 遍历完栈为空证明匹配完了，false的条件在上面判断了
+    }
+}

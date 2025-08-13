@@ -33,3 +33,50 @@ s 保证是一个 有效 的输入。
 s 中所有整数的取值范围为 [1, 300]
  */
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+class 字符串解码 {
+    public static void main(String[] args) {
+        String str = "3[a]2[bc]";
+
+        System.out.println(solution(str));
+    }
+
+    /*
+    你用的是String cur = cur + c;和StringBuilder temp = new StringBuilder(strs.pop()); temp.append(cur);
+    ，每次拼接字符串都会新建对象，尤其是在多次重复和嵌套时，频繁创建和复制字符串，导致性能下降。
+    如果用StringBuilder来维护cur，每次直接append字符和片段，效率会高很多，
+    因为StringBuilder是可变的，减少了对象创建和内存复制。
+     */
+    private static String solution(String str) {
+        Deque<Integer> nums = new ArrayDeque<>();
+        Deque<String> strs = new ArrayDeque<>();
+        String cur = "";
+        int k = 0; // 需要重复的倍数，因为可能是多位数所以下面要算一下
+
+        for (char c : str.toCharArray()) {
+            if (Character.isDigit(c)) {
+                // 遇到数字
+                k = k * 10 + (c - '0'); // c是char，不是int，所以要算一下，并且可能有多位，可以用num暂存
+            } else if (c == '[') {
+                nums.push(k); // 倍数进栈，先遇到的数字后用
+                strs.push(cur); // 存的是前面的，后面的在 ] 加倍的时候取出来加在他后面，如果还有 [] 就再进栈，重复
+                cur = "";
+                k = 0;
+            } else if (c == ']') {
+                int repeat = nums.pop();
+                StringBuilder temp = new StringBuilder(strs.pop());
+                for (int i = 0; i < repeat; i++) {
+                    temp.append(cur);
+                }
+                cur = temp.toString(); // 下一步如果遇到 [ 就该进栈了，如果遇到 ] 就把他弹出来，该加倍的自己加倍，最后拼在后面
+            } else {
+                // 遇到字母
+                cur = cur + c; // 最后在 ] 之前的字符串要被拿来加倍
+            }
+        }
+
+        return cur;
+    }
+}
