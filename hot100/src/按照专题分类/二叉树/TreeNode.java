@@ -1,7 +1,7 @@
 package 按照专题分类.二叉树;
 
 // 自己要会写哦
-class TreeNode {
+public class TreeNode {
     int val;
     TreeNode left;
     TreeNode right;
