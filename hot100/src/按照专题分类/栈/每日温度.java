@@ -24,3 +24,29 @@ package 按照专题分类.栈;
 30 <= temperatures[i] <= 100
  */
 
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+
+class 每日温度 {
+    public static void main(String[] args) {
+        int[] temperatures = {73,74,75,71,69,72,76,73};
+
+        System.out.println(Arrays.toString(solution(temperatures)));
+    }
+
+    private static int[] solution(int[] tempers) {
+        int[] res = new int[tempers.length];
+        Deque<Integer> stack = new ArrayDeque<>();
+
+        for (int i = 0; i < tempers.length; i++) {
+            while (!stack.isEmpty() && tempers[i] > tempers[stack.peek()]) {
+                int idx = stack.pop(); // 栈里样子上确实是保持的是单调递减
+                res[idx] = i - idx; // 栈里堆的多的话会先把靠外的算出来 后面的减前面的
+            }
+            stack.push(i); // 栈里存下标 存下标我是真不容易想到
+        }
+
+        return res; // 后面的没有更大的用的是数组的默认值0
+    }
+}
