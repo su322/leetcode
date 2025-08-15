@@ -24,3 +24,28 @@ tree1.jpg
 -1000 <= Node.val <= 1000
  */
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+class 二叉树的层序遍历 {
+    public static void main(String[] args) {
+//        TreeNode root = new TreeNode(3);
+        TreeNode root = null;
+//        root.left = new TreeNode(9);
+//        root.right = new TreeNode(20);
+//        root.right.left = new TreeNode(15);
+//        root.right.right = new TreeNode(7);
+
+        System.out.println(solution(root));
+    }
+
+    // 目前感觉迭代法好想一点
+    private static List<List<Integer>> solution(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        if (root == null) return null;
+
+        return res;
+    }
+}
