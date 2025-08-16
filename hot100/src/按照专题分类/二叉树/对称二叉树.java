@@ -23,3 +23,50 @@ package 按照专题分类.二叉树;
 进阶：你可以运用递归和迭代两种方法解决这个问题吗？
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+class 对称二叉树 {
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(2);
+        root.left.left = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+        root.right.left = new TreeNode(4);
+        root.right.right = new TreeNode(3);
+
+        System.out.println(solution(root));
+    }
+
+    private static boolean solution(TreeNode root) {
+        return compare(root.left, root.right);
+    }
+
+    private static boolean compare(TreeNode left, TreeNode right) {
+        if (left == null && right == null) return true;
+//        if (left.val == right.val) return true; // 不能写这行
+        if ((left == null && right != null) || (left != null && right == null)) return false;
+        if (left.val != right.val) return false;
+
+        // 检查外侧
+        boolean compareOutside = compare(left.left, right.right);
+        // 检查内侧
+        boolean compareInside = compare(left.right, right.left);
+        return compareOutside && compareInside;
+    }
+
+    // debug 略微有点难想
+    private static boolean compareDebug(TreeNode left, TreeNode right, int level) {
+        if (left == null && right == null) return true;
+//        if (left.val == right.val) return true; // 不能写这行
+        if ((left == null && right != null) || (left != null && right == null)) return false;
+        if (left.val != right.val) return false;
+
+        // 检查外侧
+        boolean compareOutside = compareDebug(left.left, right.right, level + 1);
+        // 检查内侧
+        boolean compareInside = compareDebug(left.right, right.left, level + 1);
+        return compareOutside && compareInside;
+    }
+}

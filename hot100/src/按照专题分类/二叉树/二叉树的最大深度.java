@@ -22,3 +22,40 @@ tmp-tree.jpg
 -100 <= Node.val <= 100
  */
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+class 二叉树的最大深度 {
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(3);
+        root.left = new TreeNode(9);
+        root.right = new TreeNode(20);
+        root.right.left = new TreeNode(15);
+        root.right.right = new TreeNode(7);
+
+        System.out.println(solution(root));
+    }
+
+    // 最大深度就是层数 层序遍历的时候记录一下就行 还是迭代 借助队列 如果隔一段时间不写估计就忘了
+    private static int solution(TreeNode root) {
+        int depth = 0;
+        if (root == null) return depth;
+
+        Queue<TreeNode> que = new ArrayDeque<>();
+        que.offer(root);
+
+        while (!que.isEmpty()) {
+            int levelSize = que.size();
+//            depth++; // 放这结果一样 如果是最小深度就必须得放前面了，因为while里如果根节点没有孩子就直接返回了
+            while (levelSize > 0) {
+                TreeNode poll = que.poll();
+
+                if (poll.left != null) que.offer(poll.left);
+                if (poll.right != null) que.offer(poll.right);
+                levelSize--;
+            }
+            depth++;
+        }
+        return depth;
+    }
+}

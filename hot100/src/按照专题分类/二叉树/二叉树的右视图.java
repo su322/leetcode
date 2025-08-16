@@ -30,3 +30,53 @@ tmpkpe40xeh-1.png
 -100 <= Node.val <= 100
  */
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
+class 二叉树的右视图 {
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.right = new TreeNode(5);
+        root.right.right = new TreeNode(4);
+
+        System.out.println(solution(root));
+    }
+
+    // 层序遍历 迭代 借助队列 的思路 稍微有点难想
+    private static List<Integer> solution(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Queue<TreeNode> que = new ArrayDeque<>();
+
+        if (root == null) {
+            return res;
+        }
+
+        que.offer(root);
+        while (!que.isEmpty()) {
+            int levelSize = que.size(); // 想明白levelSize的含义就理解了
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode poll = que.poll();
+
+                if (poll.left != null) {
+                    que.offer(poll.left);
+                }
+                if (poll.right != null) {
+                    que.offer(poll.right);
+                }
+
+                if (i == levelSize - 1) {
+                    // levelSize就是一层的所有结点的个数 levelSize-1 刚好是最右边的那个
+                    // 等左边的全部出去了就轮到他了
+                    res.add(poll.val);
+                }
+            }
+        }
+
+        return res;
+    }
+}

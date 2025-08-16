@@ -25,3 +25,67 @@ invert2-tree.jpg
 -100 <= Node.val <= 100
  */
 
+import com.sun.source.tree.Tree;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
+class 翻转二叉树 {
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(4);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(7);
+        root.left.left = new TreeNode(1);
+        root.left.right = new TreeNode(3);
+        root.right.right = new TreeNode(6);
+        root.right.right = new TreeNode(9);
+
+        System.out.println(solution2(root)); // 返回根节点就行
+    }
+
+    // 递归 前序遍历后序遍历都可以 中序遍历这么做有问题 要额外改
+    private static TreeNode solution1(TreeNode root) {
+        return preOrder(root);
+    }
+
+    // 可以合并到上面，因为没有其他操作了
+    private static TreeNode preOrder(TreeNode root) {
+        if (root == null) return root;
+
+        preOrder(root.left);
+        preOrder(root.right);
+        swapChildren(root);
+        return root;
+    }
+
+    private static void swapChildren(TreeNode node) {
+        TreeNode temp = node.left;
+        node.left = node.right;
+        node.right = temp;
+    }
+
+/// ==============================================================
+
+    // 迭代 层序遍历 借助队列
+    private static TreeNode solution2(TreeNode root) {
+        if (root == null) return root;
+
+        Queue<TreeNode> que = new ArrayDeque<>();
+        que.offer(root);
+
+        while (!que.isEmpty()) {
+            int levelSize = que.size();
+            while (levelSize > 0) {
+                TreeNode poll = que.poll();
+                swapChildren(poll);
+                if (poll.left != null) que.offer(poll.left);
+                if (poll.right != null) que.offer(poll.right);
+                levelSize--;
+            }
+        }
+
+        return root;
+    }
+}
